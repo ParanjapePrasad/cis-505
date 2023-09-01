@@ -4,7 +4,7 @@
  * Paranjape, Prasad. (2023).  CIS 505 Intermediate Java Programming. Bellevue University.
  */
 
-package Module_1;
+package Module_1.HelloWorldApp;
 
 public class ParanjapeHelloWorld {
     public static void main(String[] args) {
