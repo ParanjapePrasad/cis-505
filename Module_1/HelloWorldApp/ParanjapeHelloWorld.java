@@ -11,11 +11,11 @@ public class ParanjapeHelloWorld {
     /*
      * Method with two arguments which prints the Hello World with first name and
      * last name
-     * 
+     *
      * @param firstName String
-     * 
+     *
      * @param lastName String
-     * 
+     *
      */
     public static void hello(String firstName, String lastname) {
         System.out.printf(String.format("Hello World from %s %s", firstName, lastname));

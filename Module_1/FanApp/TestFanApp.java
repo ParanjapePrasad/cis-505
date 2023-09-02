@@ -9,13 +9,13 @@ package Module_1.FanApp;
 public class TestFanApp {
 
     public static void main(String[] args) {
-        
+
         Fan fan1 = new Fan(); // Fan class with default constructor
         Fan fan2 = new Fan(Fan.MEDIUM, true, 8, "Blue"); // Fan class with argument constructor with fan attributes
 
         System.out.println(fan1.toString()); // Call overridden method to print fan attributes
         System.out.println(fan2.toString()); // Call overridden method to print fan attributes
-        
+
     } // end main
 
 } // end TestFanApp

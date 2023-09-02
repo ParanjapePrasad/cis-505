@@ -30,7 +30,7 @@ public class Fan {
 
     /**
      * Class argument constructor
-     * 
+     *
      * @param speed
      * @param on
      * @param radius
@@ -45,7 +45,7 @@ public class Fan {
 
     /**
      * Accessor method to get the speed of the fan
-     * 
+     *
      * @return Speed of the fan
      */
     public int getSpeed() {
@@ -54,7 +54,7 @@ public class Fan {
 
     /**
      * Mutator method to set the fan speed
-     * 
+     *
      * @param speed of the fan to set
      */
     public void setSpeed(int speed) {
@@ -63,7 +63,7 @@ public class Fan {
 
     /**
      * Accessor method to get the functioning of the fan
-     * 
+     *
      * @return the fan is functioning or not
      */
     public boolean isOn() {
@@ -72,8 +72,8 @@ public class Fan {
 
     /**
      * Mutator method to set the functioning of the fan
-     * 
-     * @param to turn on or off the functioning of the fan
+     *
+     * @param on turn on or off the functioning of the fan
      */
     public void setOn(boolean on) {
         this.on = on;
@@ -81,7 +81,7 @@ public class Fan {
 
     /**
      * Accessor method to get the radios of the fan
-     * 
+     *
      * @return the radios of the fan
      */
     public double getRadius() {
@@ -90,7 +90,7 @@ public class Fan {
 
     /**
      * Mutator method to set the radios of the fan
-     * 
+     *
      * @param radius of the fan to set
      */
     public void setRadius(double radius) {
@@ -99,7 +99,7 @@ public class Fan {
 
     /**
      * Accessor method to get the color of the fan
-     * 
+     *
      * @return the color of the fan
      */
     public String getColor() {
@@ -108,7 +108,7 @@ public class Fan {
 
     /**
      * Mutator method to set the color of the fan
-     * 
+     *
      * @param color of the fan
      */
     public void setColor(String color) {
