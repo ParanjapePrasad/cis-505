@@ -27,9 +27,14 @@ replay_pid*
 .vscode
 .code-workspace
 
+# intellij IDE
+.idea
+.iml
+
 ## General files
 /target/
 .project
 .classpath
 .impl
+/out/
 
