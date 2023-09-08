@@ -17,8 +17,8 @@ public class ParanjapeJarOne {
      * @param lastName String
      *
      */
-    public static void hello(String firstName, String lastname) {
-        System.out.printf(String.format("Hello World from %s %s Jar one", firstName, lastname));
+    public static void hello(String firstName, String lastName) {
+        System.out.printf(String.format("Hello World from %s %s Jar one", firstName, lastName));
     } // end hello
 
     public static void main(String[] args) {
