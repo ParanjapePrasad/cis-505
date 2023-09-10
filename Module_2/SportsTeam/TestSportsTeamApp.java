@@ -15,7 +15,7 @@ public class TestSportsTeamApp {
         Scanner scanner = new Scanner(System.in); // Scanner object to handle user prompts
         System.out.println("\n  Welcome to the Sports Team App "); // Welcome message
 
-        do {
+        while (true) {
             System.out.print("\n  Enter a team name: "); // Prompt the user to enter the team name
 
             String teamName = scanner.nextLine();
@@ -47,7 +47,7 @@ public class TestSportsTeamApp {
             if (proceed.equalsIgnoreCase("n")) {
                 break; // Break do-while loop when user do not want to proceed
             }
-        } while (true);
+        } 
 
         scanner.close();
         System.out.println("\n  End of line...\n");
