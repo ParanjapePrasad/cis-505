@@ -15,16 +15,20 @@
 package Module_11.GradeBookApp;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ParanjapeGradeBookApp extends Application {
 
@@ -33,8 +37,8 @@ public class ParanjapeGradeBookApp extends Application {
     private TextField tfLastName = new TextField(); // Last name value
     private TextField tfCourse = new TextField(); // Course name value
 
-    // TextArea
-    private TextArea taGradeOutput = new TextArea(); // Display output
+    // TextArea - Removed to add Table form
+    // private TextArea taGradeOutput = new TextArea(); // Display output
 
     // Labels
     private Label lblFirstName = new Label("First Name:"); // First name label
@@ -49,6 +53,14 @@ public class ParanjapeGradeBookApp extends Application {
     private Button btnClear = new Button("Clear"); // clear fields button
     private Button btnViewGrades = new Button("View Grades"); // View grade button
     private Button btnSaveGrades = new Button("Save Grades"); // Save grade button
+
+    // TableView
+    private ObservableList<Student> olStudents = FXCollections.observableArrayList();
+    private TableView<Student> tableView = new TableView<>();
+
+    // Alert
+    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
     /**
      * Start method is the main entry point for all JavaFX applications
@@ -80,6 +92,22 @@ public class ParanjapeGradeBookApp extends Application {
         cbGrade.setMaxWidth(Double.MAX_VALUE); // Grade ComboBox set to max width to fill row
         cbGrade.getItems().addAll("A", "B", "C", "D", "E", "F"); // Add predefined grades
 
+        // Table Column values
+        TableColumn<Student, String> firstNameCol = new TableColumn<>("First Name");
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+        TableColumn<Student, String> lastNameCol = new TableColumn<>("Last Name");
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+        TableColumn<Student, String> courseCol = new TableColumn<>("Course Name");
+        courseCol.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+
+        TableColumn<Student, String> gradeCol = new TableColumn<>("Grade");
+        gradeCol.setCellValueFactory(new PropertyValueFactory<>("grade"));
+
+        tableView.getColumns().addAll(Arrays.asList(firstNameCol, lastNameCol, courseCol, gradeCol));
+        tableView.setItems(olStudents);
+
         // Adding all the fields to the grid pane
         pane.add(lblFirstName, 0, 0);
         pane.add(tfFirstName, 1, 0);
@@ -89,8 +117,8 @@ public class ParanjapeGradeBookApp extends Application {
         pane.add(tfCourse, 1, 2);
         pane.add(lblGrade, 0, 3);
         pane.add(cbGrade, 1, 3);
-        pane.add(actionBtnContainer, 1, 4);
-        pane.add(taGradeOutput, 0, 5, 2, 1);
+        pane.add(actionBtnContainer, 1, 4);        
+        pane.add(tableView, 0, 5, 2, 1);
 
         Scene scene = new Scene(pane, 350, 350);
 
@@ -104,16 +132,15 @@ public class ParanjapeGradeBookApp extends Application {
      */
     private void viewGrades() {
         try {
+            olStudents.clear();
             StudentIO studentIO = new StudentIO();
             ArrayList<Student> students = studentIO.findAll();
-            StringBuilder stringBuilder = new StringBuilder();
             for (Student student : students) {
-                stringBuilder.append(student.toString()).append("\n*************\n");
+                olStudents.add(student);
             }
-            taGradeOutput.setText(stringBuilder.toString()); // Display grades from CSV to text area
         } catch (Exception ex) {
             System.out.println("\n  Exception: " + ex.getMessage()); // Print error on the console.
-            taGradeOutput.setText("No Grades found!");
+            setAlertMessage(errorAlert, "Warning", "No Grades found!");
         }
 
     } // End viewGrades
@@ -123,14 +150,19 @@ public class ParanjapeGradeBookApp extends Application {
      */
     private void saveGrades() {
         try {
-            StudentIO studentIO = new StudentIO();
-            studentIO.insertStudent(
-                    new Student(tfFirstName.getText(), tfLastName.getText(), tfCourse.getText(), cbGrade.getValue()));
-            clearFormFields();
-            taGradeOutput.setText("Grades saved successfully!!");
+            if (isNonBlankFields()) {
+                StudentIO studentIO = new StudentIO();
+                studentIO.insertStudent(
+                        new Student(tfFirstName.getText(), tfLastName.getText(), tfCourse.getText(),
+                                cbGrade.getValue()));
+                clearFormFields();
+                setAlertMessage(infoAlert, "Success", "Grades saved successfully!!");
+            } else {
+                setAlertMessage(errorAlert, "Warning", "Please enter all the required values.");
+            }
         } catch (IOException e) { // catch IO exception while accessing CSV file.
             System.out.println("\n  Exception: " + e.getMessage()); // Print error on the console.
-            taGradeOutput.setText("Error while saving grades, please try again.");
+            setAlertMessage(errorAlert, "Error", "Error while saving grades, please try again.");
         }
     } // End saveGrades
 
@@ -141,10 +173,37 @@ public class ParanjapeGradeBookApp extends Application {
         tfFirstName.setText("");
         tfLastName.setText("");
         tfCourse.setText("");
-        cbGrade.setValue(null);
-        taGradeOutput.setText("");
+        cbGrade.setValue(null);        
+        olStudents.clear();
 
     } // End clearFormFields
+
+    /**
+     * Validates the input fields
+     * 
+     * @return boolean, true or false
+     */
+    private boolean isNonBlankFields() {
+        if (tfFirstName.getText().trim().isEmpty() || tfLastName.getText().trim().isEmpty()
+                || tfCourse.getText().trim().isEmpty() || cbGrade.getValue().trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }// End isNonBlankFields
+
+    /**
+     * @param alert,   Alert Type
+     * @param title,   Title of the Alert
+     * @param message, Message on the Alert
+     */
+    private void setAlertMessage(Alert alert, String title, String message) {
+        alert.getDialogPane().setPrefSize(250, 100);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.alertTypeProperty();
+        alert.showAndWait();
+        alert.setResizable(true);
+    }// End setAlertMessage
 
     public static void main(String[] args) {
         launch(args);

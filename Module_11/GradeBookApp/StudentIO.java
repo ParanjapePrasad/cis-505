@@ -24,6 +24,7 @@ import java.util.Scanner;
 public class StudentIO {
     private static final String FILE_NAME = "./grades.csv";
     private static final File file = new File(FILE_NAME);
+    private String CSV_HEADER = "FirstName,LastName,Course,Grade";
 
     /**
      * Method to transform and return all Student objects contained
@@ -59,11 +60,10 @@ public class StudentIO {
             writer = new PrintWriter(new FileOutputStream(FILE_NAME, true));
         } else { // Create new file with header row
             writer = new PrintWriter(FILE_NAME);
-            writer.print("FirstName,LastName,Course,Grade");
+            writer.print(CSV_HEADER);
         }
         writer.print("\n" + student.getFirstName() + "," + student.getLastName() + "," + student.getCourseName() + ","
-                + student.getGrade()); // save student details in
-        // the CSV file
+                + student.getGrade()); // save student details in the CSV file
         writer.close(); // close the PrintWriter stream
     }
 } // End StudentIO
